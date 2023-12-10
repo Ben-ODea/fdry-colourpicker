@@ -1,0 +1,78 @@
+html {
+    font-size: 16px;
+}
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    direction: ltr;
+    font-family: 'Courier New', Courier, monospace;
+}
+.form-title {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+}
+.container {
+    text-align: left;
+    margin-left: 50px;
+    margin-top: 50px;
+}
+.form-label {
+    display: block;
+    margin-right: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+.form-input, .form-textarea {
+    display: flex;
+    flex: 1;
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-family: 'Courier New', Courier, monospace;
+    caret-color: white;
+    font-size: 16px;
+    overflow: visible;
+    resize: none;
+}
+.form-textarea { width: 100%; }
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+}
+.form-submit {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+.form-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+input[type="submit"] {
+    width: fit-content;
+    text-align: left;
+    margin: 20px 0 0 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+    border:none;
+    font-family: 'Courier New', Courier, monospace;
+}
+input[type="submit"]:hover, input[type="submit"]:focus {
+    outline: none;
+    border-bottom: 1px solid white;
+    font-weight: bold;
+}
+.compressed {
+    max-height: 0;
+    overflow: hidden;
+}

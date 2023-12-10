@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Foundry 2023 Sign-in">
+    <meta name="author" content="Foundry 2023">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+    <link rel="icon" href="favicon.ico">
+    <title>Foundry 2023 Sign-in</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="form-title">Welcome to Foundry 2023. Let's get you signed in.</h1>
+        <div class="form" id="form">
+
+            <div class="form-field compressed" id="name-field">
+                <label for="name" class="form-label">What's your name?</label>
+                <input type="text" id="name" name="name" class="form-input" required><br><br>
+            </div>
+            
+            <div class="form-field compressed" id="workplace-field">
+                <label for="workplace" class="form-label">Where do you work?</label>
+                <input type="text" id="workplace" name="workplace" class="form-input" required><br><br>
+            </div>
+
+            <div class="excitement-field compressed" id="excitement-field">
+                <div>&nbsp;</div>
+                <label for="excitement" class="form-label">And finally, what are you most excited to see at Foundry 2023? This response will be used to generate a fun surprise, so put some thought into it, even if it's brief!</label><br>
+                <textarea id="excitement" name="excitement" class="form-textarea" required></textarea><br><br>
+            </div>
+
+            <input type="submit" value="Sign In" class="form-submit compressed" id="form-submit">
+
+        </div>
+        <div class="compressed welcome" id="welcome">
+            Welcome, <span id="welcome-name"></span>! Your name tag will be ready soon.
+        </div>
+    </div>
+</body>
+</html>

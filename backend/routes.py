@@ -16,7 +16,7 @@ async def get_styles(): return FileResponse("frontend/styles.css")
 async def get_scripts(): return FileResponse("frontend/script.js")
 
 @app.get("/favicon.ico", include_in_schema=False)
-async def get_favicon(): return None # return FileResponse("frontend/favicon.ico") # TODO: favicon
+async def get_favicon(): return FileResponse("frontend/favicon.ico")
 
 
 class User(BaseModel):

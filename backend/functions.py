@@ -16,7 +16,11 @@ anchors = {
 
 # Load the model from disk or download it if it doesn't exist
 print("[+] Loading model...")
-model = tf.saved_model.load("./backend/model")
+try: model = tf.saved_model.load("./backend/model")
+except: 
+    print("[-] Model not found on disk. Please be patient while it downloads...")
+    model = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+    tf.saved_model.save(model, "./backend/model")
 print("[+] Model loaded.")
 
 # Precompute the embeddings of the anchors
@@ -25,17 +29,6 @@ embeddings = {
     "G": model([anchors["G"]]),
     "B": model([anchors["B"]])
 }
-
-
-### TESTING ###
-
-# If this file is run directly (rather than routes.py importing it), run a test mode
-if __name__ == "__main__":
-    print("[*] Testing mode. Enter a paragraph to get its RGB encoding. Ctrl+C to terminate.")
-    while True:
-        answer = input(">>> ")
-        RGB = answer_to_RGB(answer)
-        print("[+] Normalised colour array is:", RGB)
 
 
 ### FUNCTIONS ###
@@ -118,6 +111,14 @@ def make_rgb_vibrant(RGB):
         return [int(255 * (colour / max_colour)) for colour in RGB]
 
 
+### TESTING ###
 
+# If this file is run directly (rather than routes.py importing it), run a test mode
+if __name__ == "__main__":
+    print("[*] Testing mode. Enter a paragraph to get its RGB encoding. Ctrl+C to terminate.")
+    while True:
+        answer = input(">>> ")
+        RGB = answer_to_RGB(answer)
+        print("[+] Normalised colour array is:", RGB)
 
 

@@ -18,7 +18,6 @@ async def get_scripts(): return FileResponse("frontend/script.js")
 @app.get("/favicon.ico", include_in_schema=False)
 async def get_favicon(): return None # return FileResponse("frontend/favicon.ico") # TODO: favicon
 
-
 class User(BaseModel):
     name: constr(min_length=1, max_length=100)
     workplace: constr(min_length=1, max_length=100)

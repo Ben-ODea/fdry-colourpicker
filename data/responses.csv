@@ -1,1 +1,3 @@
-name,workplace,answer,R,G,B,RGB
+name,workplace,answer,A,B,C,D,RGB
+"Clare","Blackbird","I'm a biologist but we're moving too fast. People need to be more careful. I work on a cancer therapy that will be a better than those that we currently have.","tf.Tensor(1.1959547, shape=(), dtype=float32)","tf.Tensor(1.1061844, shape=(), dtype=float32)","tf.Tensor(1.182178, shape=(), dtype=float32)","tf.Tensor(1.0762427, shape=(), dtype=float32)","#5c408a"
+"Clare","Blackbird","I'm a physicist working on changing how we do computation. Quantum computers will change everything about the world.","tf.Tensor(1.1263491, shape=(), dtype=float32)","tf.Tensor(1.2063075, shape=(), dtype=float32)","tf.Tensor(1.129183, shape=(), dtype=float32)","tf.Tensor(1.2093894, shape=(), dtype=float32)","#ff2860"

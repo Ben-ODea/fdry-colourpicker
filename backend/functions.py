@@ -7,11 +7,12 @@ import csv
 
 ### GLOBALS ###
 
-# The anchors are the three main roles in a company: R&D, Growth, and Branding
+# The anchors are about the midpoints of four quadrants defined by two axes: acc/decel and life/physical sciences.
 anchors = {
-    "R": "I am a software engineer, developer, and technical expert.",
-    "G": "I enjoy events, organising, and networking to create new sales and hiring opportunities.",
-    "B": "I take care of the marketing, branding, and design of the product."
+    "A": "I am an accelerationist with a love of the physical sciences. I am an advocate for the rapid advancement of technological progress, seeking to propel humanity forward through the relentless pursuit of innovation and understanding of physics, mathematics, hardware engineering, and related disciplines.",
+    "B": "I am an accelerationist with a love of the life sciences. I am an advocate for the rapid advancement of technological progress in biology and life itself.",
+    "C": "I am a decelerationist with a love of the physical sciences. I am an advocate for the slow and careful advancement of technological progress, seeking to propel humanity forward through the relentless pursuit of innovation and understanding of physics, mathematics, hardware engineering, and related disciplines.",
+    "D": "I am a decelerationist with a love of the life sciences. I am an advocate for the slow and careful advancement of technological progress in biology and life itself."
 }
 
 # Load the model from disk or download it if it doesn't exist
@@ -21,21 +22,13 @@ print("[+] Model loaded.")
 
 # Precompute the embeddings of the anchors
 embeddings = {
-    "R": model([anchors["R"]]),
-    "G": model([anchors["G"]]),
-    "B": model([anchors["B"]])
+    "A": model([anchors["A"]]),
+    "B": model([anchors["B"]]),
+    "C": model([anchors["C"]]),
+    "D": model([anchors["D"]])
 }
 
 
-### TESTING ###
-
-# If this file is run directly (rather than routes.py importing it), run a test mode
-if __name__ == "__main__":
-    print("[*] Testing mode. Enter a paragraph to get its RGB encoding. Ctrl+C to terminate.")
-    while True:
-        answer = input(">>> ")
-        RGB = answer_to_RGB(answer)
-        print("[+] Normalised colour array is:", RGB)
 
 
 ### FUNCTIONS ###
@@ -45,12 +38,12 @@ def handle_form(user: dict):
     Takes a dictionary of user data and returns a dictionary of the form {name: ..., workplace: ..., answer: ..., RGB: ...}.
     """
 
-    # Get the RGB encoding of the answer
-    RGB = answer_to_RGB(user["answer"])
-    RGB = make_rgb_vibrant(RGB)
+    # Get the distances and RGB encoding for the user's answer
+    distances = answer_to_RGB(user["answer"])
+    RGB = make_rgb_vibrant(distances)
 
     # Save the data to a CSV file
-    user["R"] = RGB[0]; user["G"] = RGB[1]; user["B"] = RGB[2]
+    user["A"] = distances[0]; user["B"] = distances[1]; user["C"] = distances[2]; user["D"] = distances[3]
     user["RGB"] = "#%02x%02x%02x" % tuple(RGB)
     save_to_csv(user)
 
@@ -85,39 +78,46 @@ def save_to_csv(data: dict):
 
 def answer_to_RGB(answer):
     """
-    Takes a string and returns a list of three integers between 0 and 255 representing the RGB encoding of the answer.
+    Takes a string and returns the distances between answer and anchor points.
     """
 
     embedding = model([answer])
 
     RGB = []
-    for colour in ["R", "G", "B"]:
-        distance = tf.math.reduce_sum(tf.math.square(tf.math.subtract(embedding, embeddings[colour])))
-        distance = min(2, distance) / 2 # Cap the distance at 2
-        distance = pow(distance, 2) # Square the distance to make it more extreme
-        distance = 255 * (1 - distance) # Invert the distance and scale it to 0-255
-        RGB.append(int(distance)) 
+    for colour in ["A", "B", "C", "D"]:
+        distance = tf.norm(embedding - embeddings[colour], ord="euclidean")
+        RGB.append(distance) 
 
     return RGB
 
 
 def make_rgb_vibrant(RGB):
     """
-    Takes a list of three integers between 0 and 255 representing the RGB encoding of the answer and returns a list of three integers between 0 and 255 representing the RGB encoding of the answer, with the colour made more vibrant.
+    Takes a list of distances and selects a coloured quadrant based on the distances.
     """
 
-    # Get the maximum value of the three colours
-    max_colour = max(RGB)
+    # Get the closest anchor
+    nearest_anchor = RGB.index(min(RGB))
 
-    # If the maximum value is 255, return the original colour
-    if max_colour == 255:
-        return RGB
+    # Return the colour related to the closest anchor
+    if nearest_anchor == 0: # nearest anchor is acc/physical = watermelon
+        return [255, 40, 96]
+    elif nearest_anchor == 1: # nearest anchor is acc/life = leaf
+        return [0, 181, 143]
+    elif nearest_anchor == 2: #nearest anchor is dec/physical = lemon
+        return [255, 180, 0]
+    else: # nearest anchor is dec/life = grape
+        return [92, 64, 138]
+    
 
-    # Otherwise, scale the colours up to 255
-    else:
-        return [int(255 * (colour / max_colour)) for colour in RGB]
+### TESTING ###
 
-
-
-
-
+# If this file is run directly (rather than routes.py importing it), run a test mode
+if __name__ == "__main__":
+    print("[*] Testing mode. Enter a paragraph to get its RGB encoding. Ctrl+C to terminate.")
+    while True:
+        answer = input(">>> ")
+        distances = answer_to_RGB(answer)
+        colour = make_rgb_vibrant(distances)
+        print("[+] Normalised colour array is:", colour)
+        print("[+] distances were:",distances)

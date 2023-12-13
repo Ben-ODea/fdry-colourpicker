@@ -17,7 +17,11 @@ anchors = {
 
 # Load the model from disk or download it if it doesn't exist
 print("[+] Loading model...")
-model = tf.saved_model.load("./backend/model")
+try: model = tf.saved_model.load("./backend/model")
+except: 
+    print("[-] Model not found on disk. Please be patient while it downloads...")
+    model = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+    tf.saved_model.save(model, "./backend/model")
 print("[+] Model loaded.")
 
 # Precompute the embeddings of the anchors
